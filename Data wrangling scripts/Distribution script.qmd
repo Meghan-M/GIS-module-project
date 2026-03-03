@@ -10,7 +10,7 @@ Script that explores the distribution of both African penguins and caracals and 
 
 ## Running Code
 
-```{r}#libraries}
+```{r}
 library(rinat)#retrieve the data from INAT
 library(sf)##make spatial object
 library(leafpop)
@@ -25,6 +25,7 @@ library(htmltools)
 library(mapview)##handles layers and legends
 library(leafpop)
 
+
 ```
 
 **Data wrangling**
@@ -32,11 +33,11 @@ library(leafpop)
 ```{r}
 #Call the data directly from iNat
 peng <- get_inat_obs(taxon_name = "African penguin",
-                   bounds = c(-35.2, 16.3, -30.5, 24),#bounds of the Western Cape
+                   bounds = c(-35.2, 16.3, -30.5, 24),#bounds(WC)
                    maxresults = 1000)
 head(peng)
-names(peng)
-
+peng_filtered <- peng %>%
+  dplyr::filter(.data$positional_accuracy <= 1000)
 ```
 
 ```{r}
@@ -51,7 +52,9 @@ peng <- peng %>% filter(positional_accuracy<46 &
 ```{r}
 ##double check the data frames crs
 st_crs(peng)##4326
+```
 
+```{r}
 #make the penguin data frame a spacial object of class sf
 peng <- st_as_sf(peng, coords = c("longitude", "latitude"), crs = 4326)
 ```
