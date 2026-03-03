@@ -25,8 +25,7 @@ library(htmltools)
 ##common sense check 
 library(mapview)##handles layers and legends
 library(leafpop)
-library(ggplot2)##plotting
-library(rnaturalearth)##retrieving map data
+
 
 ```
 
@@ -37,9 +36,14 @@ library(rnaturalearth)##retrieving map data
 peng <- get_inat_obs(taxon_name = "African penguin",
                    bounds = c(-35.2, 16.3, -30.5, 24),#bounds(WC)
                    maxresults = 1000)
+colnames(peng)
 head(peng)
+names(peng)
+
 peng_filtered <- peng %>%
   dplyr::filter(.data$positional_accuracy <= 1000)
+getwd()
+list.files()
 ```
 
 ```{r}
@@ -145,7 +149,6 @@ cara$type <- "Caracals"
 
 ```{r}
 pc <- rbind(peng, cara)
-combined <- dplyr::bind_rows(peng, cara)
 
 ggplot(combined) +
   geom_sf(aes(color = type), alpha = 0.7) +
